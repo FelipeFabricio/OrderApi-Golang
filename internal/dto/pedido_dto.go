@@ -8,9 +8,10 @@ import (
 )
 
 type PedidoDto struct {
-	ID        uuid.UUID       `json:"id"`
-	ClienteId uuid.UUID       `json:"clienteId"`
-	Valor     decimal.Decimal `json:"valor"`
-	Status    uint8           `json:"status"`
-	Data      time.Time       `json:"data"`
+	ID           uuid.UUID       `json:"id"`
+	ClienteId    uuid.UUID       `json:"clienteId"`
+	Valor        decimal.Decimal `json:"valor"`
+	Status       uint8           `json:"status"`
+	Data         time.Time       `json:"data"`
+	NumeroPedido uint64          `json:"numeroPedido"`
 }

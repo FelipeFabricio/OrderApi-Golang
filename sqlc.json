@@ -1,0 +1,27 @@
+{
+    "version": "2",
+    "sql": [
+      {
+        "schema": "sql/migrations",
+        "queries": "sql/queries",
+        "engine": "mysql",
+        "gen": {
+          "go": {
+            "package": "db",
+            "out": "internal/infra/database/sqlc",
+            "emit_interface": true,
+            "overrides": [
+              {
+                "go_type": "github.com/shopspring/decimal.Decimal",
+                "db_type": "decimal"
+              },
+              {
+                "go_type": "github.com/shopspring/decimal.Decimal",
+                "db_type": "decimal"
+              }        
+            ]
+          }
+        }
+      }
+    ]
+  }
