@@ -2,7 +2,7 @@
 // versions:
 //   sqlc v1.23.0
 
-package db
+package database
 
 import (
 	"context"
@@ -16,6 +16,7 @@ type Querier interface {
 	DeletarProduto(ctx context.Context, id string) error
 	InserirCliente(ctx context.Context, arg InserirClienteParams) error
 	InserirProduto(ctx context.Context, arg InserirProdutoParams) error
+	ObterClientePorCpf(ctx context.Context, cpf sql.NullString) (Cliente, error)
 	ObterPedidoPorNumeroPedido(ctx context.Context, numeropedido int32) (Pedido, error)
 	ObterProdutosPorCategoria(ctx context.Context, categoria int32) ([]Produto, error)
 	ObterTodosProdutos(ctx context.Context) ([]Produto, error)

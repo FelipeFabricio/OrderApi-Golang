@@ -7,8 +7,8 @@
         "engine": "mysql",
         "gen": {
           "go": {
-            "package": "db",
-            "out": "internal/infra/database/sqlc",
+            "package": "database",
+            "out": "internal/infra/database",
             "emit_interface": true,
             "overrides": [
               {

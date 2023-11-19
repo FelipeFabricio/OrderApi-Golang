@@ -3,7 +3,7 @@
 //   sqlc v1.23.0
 // source: queries.sql
 
-package db
+package database
 
 import (
 	"context"
@@ -19,7 +19,7 @@ WHERE Id = ?
 
 type AtualizarClienteParams struct {
 	Nome  sql.NullString
-	Email string
+	Email sql.NullString
 	Cpf   sql.NullString
 	ID    string
 }
@@ -75,27 +75,34 @@ func (q *Queries) DeletarProduto(ctx context.Context, id string) error {
 }
 
 const inserirCliente = `-- name: InserirCliente :exec
-INSERT INTO Clientes (Nome, Email, Cpf)
-VALUES (?, ?, ?)
+INSERT INTO Clientes (Id, Nome, Email, Cpf)
+VALUES (?, ?, ?, ?)
 `
 
 type InserirClienteParams struct {
+	ID    string
 	Nome  sql.NullString
-	Email string
+	Email sql.NullString
 	Cpf   sql.NullString
 }
 
 func (q *Queries) InserirCliente(ctx context.Context, arg InserirClienteParams) error {
-	_, err := q.db.ExecContext(ctx, inserirCliente, arg.Nome, arg.Email, arg.Cpf)
+	_, err := q.db.ExecContext(ctx, inserirCliente,
+		arg.ID,
+		arg.Nome,
+		arg.Email,
+		arg.Cpf,
+	)
 	return err
 }
 
 const inserirProduto = `-- name: InserirProduto :exec
-INSERT INTO Produtos (Nome, Valor, Descricao, Categoria) 
-VALUES (?, ?, ?, ?)
+INSERT INTO Produtos (Id, Nome, Valor, Descricao, Categoria) 
+VALUES (?, ?, ?, ?, ?)
 `
 
 type InserirProdutoParams struct {
+	ID        string
 	Nome      string
 	Valor     decimal.Decimal
 	Descricao sql.NullString
@@ -104,12 +111,29 @@ type InserirProdutoParams struct {
 
 func (q *Queries) InserirProduto(ctx context.Context, arg InserirProdutoParams) error {
 	_, err := q.db.ExecContext(ctx, inserirProduto,
+		arg.ID,
 		arg.Nome,
 		arg.Valor,
 		arg.Descricao,
 		arg.Categoria,
 	)
 	return err
+}
+
+const obterClientePorCpf = `-- name: ObterClientePorCpf :one
+SELECT id, nome, cpf, email FROM Clientes WHERE Cpf = ?
+`
+
+func (q *Queries) ObterClientePorCpf(ctx context.Context, cpf sql.NullString) (Cliente, error) {
+	row := q.db.QueryRowContext(ctx, obterClientePorCpf, cpf)
+	var i Cliente
+	err := row.Scan(
+		&i.ID,
+		&i.Nome,
+		&i.Cpf,
+		&i.Email,
+	)
+	return i, err
 }
 
 const obterPedidoPorNumeroPedido = `-- name: ObterPedidoPorNumeroPedido :one

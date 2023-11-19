@@ -2,7 +2,7 @@
 // versions:
 //   sqlc v1.23.0
 
-package db
+package database
 
 import (
 	"database/sql"
@@ -14,7 +14,7 @@ type Cliente struct {
 	ID    string
 	Nome  sql.NullString
 	Cpf   sql.NullString
-	Email string
+	Email sql.NullString
 }
 
 type Pedido struct {

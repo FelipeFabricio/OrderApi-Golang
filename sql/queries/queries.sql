@@ -1,6 +1,6 @@
 -- name: InserirProduto :exec
-INSERT INTO Produtos (Nome, Valor, Descricao, Categoria) 
-VALUES (?, ?, ?, ?);
+INSERT INTO Produtos (Id, Nome, Valor, Descricao, Categoria) 
+VALUES (?, ?, ?, ?, ?);
 
 -- name: ObterTodosProdutos :many
 SELECT * FROM Produtos;
@@ -16,12 +16,15 @@ WHERE Id = ?;
 DELETE FROM Produtos WHERE Id = ?;
 
 -- name: InserirCliente :exec
-INSERT INTO Clientes (Nome, Email, Cpf)
-VALUES (?, ?, ?);
+INSERT INTO Clientes (Id, Nome, Email, Cpf)
+VALUES (?, ?, ?, ?);
 
 -- name: AtualizarCliente :execresult
 UPDATE Clientes SET Nome = ?, Email = ?, Cpf = ?
 WHERE Id = ?;                              
+
+-- name: ObterClientePorCpf :one
+SELECT * FROM Clientes WHERE Cpf = ?;
 
 -- name: ObterPedidoPorNumeroPedido :one
 SELECT * FROM Pedidos WHERE NumeroPedido = ?;
