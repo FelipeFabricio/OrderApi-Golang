@@ -8,10 +8,22 @@ import (
 
 	"github.com/felipefabricio/wonder-food/configs"
 	"github.com/felipefabricio/wonder-food/internal/infra/database"
+	"github.com/felipefabricio/wonder-food/internal/webapi/router"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/google/uuid"
 )
 
+// @title           WonderFood API
+// @version         1.0
+// @description     API para o sistema de pedidos da WonderFood
+// @termsOfService  http://swagger.io/terms/
+
+// @contact.name   Felipe Fabricio
+// @contact.url    https://www.linkedin.com/in/felipefabricio/
+// @contact.email  ff.oliveira32@gmail.com
+
+// @host      localhost:8000
+// @BasePath  /
 func main() {
 	ctx := context.Background()
 	configs, err := configs.LoadConfig("../configs")
@@ -31,6 +43,8 @@ func main() {
 	}
 
 	fmt.Println("Conexão com a Base de Dados estabelecida com Sucesso!")
+
+	router.HandleRequests()
 
 	queries := database.New(dbConnection)
 

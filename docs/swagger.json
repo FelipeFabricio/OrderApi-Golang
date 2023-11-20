@@ -1,0 +1,156 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "API para o sistema de pedidos da WonderFood",
+        "title": "WonderFood API",
+        "termsOfService": "http://swagger.io/terms/",
+        "contact": {
+            "name": "Felipe Fabricio",
+            "url": "https://www.linkedin.com/in/felipefabricio/",
+            "email": "ff.oliveira32@gmail.com"
+        },
+        "version": "1.0"
+    },
+    "host": "localhost:8000",
+    "basePath": "/",
+    "paths": {
+        "/produtos": {
+            "get": {
+                "description": "Obtém todos os Produtos cadastrados",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Produtos"
+                ],
+                "summary": "Listar Produtos",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/entity.Produto"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/handler.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.Error"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Cria um novo Produto",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Produtos"
+                ],
+                "summary": "Inserir Produto",
+                "parameters": [
+                    {
+                        "description": "Request do Produto",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.ProdutoDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.Error"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "dto.ProdutoDto": {
+            "type": "object",
+            "properties": {
+                "categoria": {
+                    "type": "integer"
+                },
+                "descricao": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "nome": {
+                    "type": "string"
+                },
+                "valor": {
+                    "type": "number"
+                }
+            }
+        },
+        "entity.CategoriaProduto": {
+            "type": "integer",
+            "enum": [
+                1,
+                2,
+                3,
+                4
+            ],
+            "x-enum-varnames": [
+                "Lanche",
+                "Bebida",
+                "Sobremesa",
+                "Acompanhamento"
+            ]
+        },
+        "entity.Produto": {
+            "type": "object",
+            "properties": {
+                "categoria": {
+                    "$ref": "#/definitions/entity.CategoriaProduto"
+                },
+                "descricao": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "nome": {
+                    "type": "string"
+                },
+                "valor": {
+                    "type": "number"
+                }
+            }
+        },
+        "handler.Error": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
