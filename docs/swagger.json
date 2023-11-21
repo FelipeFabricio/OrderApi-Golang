@@ -86,6 +86,53 @@
                     }
                 }
             }
+        },
+        "/produtos/{categoria}": {
+            "get": {
+                "description": "Obtém todos os Produtos cadastrados por Categoria de Produto",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Produtos"
+                ],
+                "summary": "Listar Produto por Categoria de Produto",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Categoria Produto",
+                        "name": "categoria",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/entity.Produto"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/handler.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.Error"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
