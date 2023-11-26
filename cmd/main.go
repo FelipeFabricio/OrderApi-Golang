@@ -10,6 +10,7 @@ import (
 	"github.com/felipefabricio/wonder-food/internal/usecase"
 	"github.com/felipefabricio/wonder-food/internal/webapi/handler"
 	"github.com/go-chi/chi"
+	"github.com/go-chi/chi/middleware"
 	_ "github.com/go-sql-driver/mysql"
 	httpSwagger "github.com/swaggo/http-swagger"
 	"gorm.io/driver/mysql"
@@ -43,10 +44,11 @@ func main() {
 	produtoHandler := handler.NewProdutoHandler(produtoUseCases)
 
 	r := chi.NewRouter()
+	r.Use(middleware.Logger)
 	r.Route("/produtos", func(r chi.Router) {
 		r.Get("/", produtoHandler.ObterTodosProdutos)
 		r.Post("/", produtoHandler.InserirProduto)
-		r.Get("/{categoria:int}", produtoHandler.ObterPorCategoria)
+		r.Get("/{categoria}", produtoHandler.ObterPorCategoria)
 	})
 
 	r.Get("/docs/*", httpSwagger.Handler(httpSwagger.URL("http://localhost:8000/docs/doc.json")))

@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/felipefabricio/wonder-food/internal/entity"
 	interfaces "github.com/felipefabricio/wonder-food/internal/entity/interfaces"
 	"github.com/go-chi/chi"
 )
@@ -51,14 +52,20 @@ func (p *ProdutoHandler) ObterTodosProdutos(w http.ResponseWriter, r *http.Reque
 // @Failure      500       {object}  Error
 // @Router       /produtos/{categoria} [get]
 func (p *ProdutoHandler) ObterPorCategoria(w http.ResponseWriter, r *http.Request) {
-	//TODO: Validar se o parâmetro é um número e converter para um Enum
-	_, err := strconv.Atoi(chi.URLParam(r, "categoria"))
+	categoria, err := strconv.Atoi(chi.URLParam(r, "categoria"))
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	//produtos, err := p.produtoUseCases.ObterPorCategoria(categoriaProduto)
+	produtos, err := p.produtoUseCases.ObterPorCategoria(entity.CategoriaProduto(categoria))
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+	//TODO: Deixar setado para todos os endpoints respoderem como json
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(produtos)
 }
 
 // CriarProduto godoc
@@ -72,5 +79,17 @@ func (p *ProdutoHandler) ObterPorCategoria(w http.ResponseWriter, r *http.Reques
 // @Failure      500         {object}  Error
 // @Router       /produtos [post]
 func (p *ProdutoHandler) InserirProduto(w http.ResponseWriter, r *http.Request) {
-	w.WriteHeader(http.StatusOK)
+	var produto entity.Produto
+	err := json.NewDecoder(r.Body).Decode(&produto)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+	err = p.produtoUseCases.Inserir(&produto)
+	if err != nil {
+		//TODO: Criar objeto de erro para ser mostrado no swagger
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+	w.WriteHeader(http.StatusCreated)
 }

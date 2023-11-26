@@ -14,7 +14,12 @@ func NewProdutoUseCases(ProdutoRepository interfaces.ProdutoRepositoryInterface)
 }
 
 func (p *ProdutoUseCases) Inserir(produto *entity.Produto) error {
-	return p.ProdutoRepository.Inserir(produto)
+	novoProduto, err := produto.NewProduto(produto.Nome, produto.Descricao, produto.Categoria, produto.Valor)
+	if err != nil {
+		return err
+	}
+
+	return p.ProdutoRepository.Inserir(novoProduto)
 }
 
 func (p *ProdutoUseCases) ObterTodosProdutos() (*[]entity.Produto, error) {
