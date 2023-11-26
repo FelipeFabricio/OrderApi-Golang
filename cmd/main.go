@@ -37,12 +37,11 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println("Conectado ao banco de dados na porta 3306!")
+	fmt.Printf("Conectado ao banco de dados na porta %s!\n", configs.DBPort)
 
 	produtoRepository := database.NewProdutoDb(db)
 	produtoUseCases := usecase.NewProdutoUseCases(produtoRepository)
 	produtoHandler := handler.NewProdutoHandler(produtoUseCases)
-
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
 	r.Route("/produtos", func(r chi.Router) {
@@ -51,7 +50,16 @@ func main() {
 		r.Get("/{categoria}", produtoHandler.ObterPorCategoria)
 	})
 
+	clienteRepository := database.NewClienteDb(db)
+	clienteUseCases := usecase.NewClienteUseCases(clienteRepository)
+	clienteHandler := handler.NewClienteHandler(clienteUseCases)
+	r.Route("/clientes", func(r chi.Router) {
+		r.Post("/", clienteHandler.Inserir)
+		r.Get("/", clienteHandler.ObterTodos)
+		r.Put("/{id}", clienteHandler.Atualizar)
+	})
+
 	r.Get("/docs/*", httpSwagger.Handler(httpSwagger.URL("http://localhost:8000/docs/doc.json")))
-	fmt.Println("Servidor iniciado na porta 8000!")
-	http.ListenAndServe(":8000", r)
+	fmt.Printf("Servidor iniciado na porta %s!", configs.WebServerPort)
+	http.ListenAndServe(fmt.Sprintf(":%s", configs.WebServerPort), r)
 }

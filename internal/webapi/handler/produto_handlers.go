@@ -31,7 +31,7 @@ func NewProdutoHandler(useCases interfaces.ProdutoUseCasesInterface) *ProdutoHan
 func (p *ProdutoHandler) ObterTodosProdutos(w http.ResponseWriter, r *http.Request) {
 	produtos, err := p.produtoUseCases.ObterTodosProdutos()
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
+		w.WriteHeader(http.StatusNotFound)
 		return
 	}
 
@@ -49,6 +49,7 @@ func (p *ProdutoHandler) ObterTodosProdutos(w http.ResponseWriter, r *http.Reque
 // @Param        categoria path      int  true  "Categoria Produto"
 // @Success      200       {array}   entity.Produto
 // @Failure      404       {object}  Error
+// @Failure      400       {object}  Error
 // @Failure      500       {object}  Error
 // @Router       /produtos/{categoria} [get]
 func (p *ProdutoHandler) ObterPorCategoria(w http.ResponseWriter, r *http.Request) {
@@ -59,7 +60,7 @@ func (p *ProdutoHandler) ObterPorCategoria(w http.ResponseWriter, r *http.Reques
 	}
 	produtos, err := p.produtoUseCases.ObterPorCategoria(entity.CategoriaProduto(categoria))
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
+		w.WriteHeader(http.StatusNotFound)
 		return
 	}
 	//TODO: Deixar setado para todos os endpoints respoderem como json
@@ -76,6 +77,7 @@ func (p *ProdutoHandler) ObterPorCategoria(w http.ResponseWriter, r *http.Reques
 // @Produce      json
 // @Param        request     body      dto.ProdutoDto  true  "Request do Produto"
 // @Success      201
+// @Failure      400       {object}  Error
 // @Failure      500         {object}  Error
 // @Router       /produtos [post]
 func (p *ProdutoHandler) InserirProduto(w http.ResponseWriter, r *http.Request) {

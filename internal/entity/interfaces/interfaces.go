@@ -13,6 +13,7 @@ type ProdutoRepositoryInterface interface {
 type ClienteRepositoryInterface interface {
 	Inserir(cliente *entity.Cliente) error
 	Atualizar(cliente *entity.Cliente) error
+	ObterTodos() (*[]entity.Cliente, error)
 }
 
 type PedidoRepositoryInterface interface {
@@ -27,4 +28,10 @@ type ProdutoUseCasesInterface interface {
 	Inserir(produto *entity.Produto) error
 	ObterTodosProdutos() (*[]entity.Produto, error)
 	ObterPorCategoria(categoria entity.CategoriaProduto) (*[]entity.Produto, error)
+}
+
+type ClienteUseCasesInterface interface {
+	Inserir(cliente *entity.Cliente) error
+	Atualizar(cliente *entity.Cliente) error
+	ObterTodos() (*[]entity.Cliente, error)
 }

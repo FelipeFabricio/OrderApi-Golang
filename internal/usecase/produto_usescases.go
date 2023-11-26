@@ -18,7 +18,6 @@ func (p *ProdutoUseCases) Inserir(produto *entity.Produto) error {
 	if err != nil {
 		return err
 	}
-
 	return p.ProdutoRepository.Inserir(novoProduto)
 }
 

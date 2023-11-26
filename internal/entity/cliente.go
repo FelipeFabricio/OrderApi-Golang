@@ -1,14 +1,37 @@
 package entity
 
-import "github.com/google/uuid"
+import (
+	"errors"
 
-type Cpf struct {
-	Cpf string `json:"cpf"`
-}
+	"github.com/google/uuid"
+)
+
+var (
+	ErrDadosInvalidados = errors.New("Dados do Cliente inválidos")
+)
 
 type Cliente struct {
 	ID    uuid.UUID `json:"id"`
 	Nome  string    `json:"nome"`
-	Cpf   Cpf       `json:"cpf"`
+	Cpf   string    `json:"cpf"`
 	Email string    `json:"email"`
+}
+
+func (c *Cliente) NewCliente(nome, email, cpf string) (*Cliente, error) {
+
+	if !c.ValidarDadosClientes() {
+		return nil, ErrCategoriaProdutoInvalida
+	}
+
+	novoCliente := &Cliente{
+		ID:    uuid.New(),
+		Nome:  nome,
+		Cpf:   cpf,
+		Email: email,
+	}
+	return novoCliente, nil
+}
+
+func (c *Cliente) ValidarDadosClientes() bool {
+	return c.Nome != "" && c.Email != "" && c.Cpf != ""
 }
