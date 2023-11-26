@@ -1,8 +1,16 @@
 package entity
 
-import "github.com/felipefabricio/wonder-food/internal/entity"
+import (
+	"github.com/felipefabricio/wonder-food/internal/dto"
+	"github.com/felipefabricio/wonder-food/internal/entity"
+)
 
-type ProdutoRepositoryInterface interface {
+type ProdutoUseCasesInterface interface {
+	Inserir(produto *entity.Produto) error
+	ObterTodosProdutos() (*[]entity.Produto, error)
+	ObterPorCategoria(categoria entity.CategoriaProduto) (*[]entity.Produto, error)
+}
+type ProdutoDbInterface interface {
 	Inserir(produto *entity.Produto) error
 	ObterTodos() (*[]entity.Produto, error)
 	ObterPorCategoria(categoria entity.CategoriaProduto) (*[]entity.Produto, error)
@@ -10,28 +18,28 @@ type ProdutoRepositoryInterface interface {
 	Deletar(id string) error
 }
 
-type ClienteRepositoryInterface interface {
-	Inserir(cliente *entity.Cliente) error
-	Atualizar(cliente *entity.Cliente) error
-	ObterTodos() (*[]entity.Cliente, error)
-}
-
-type PedidoRepositoryInterface interface {
-	Inserir(pedido *entity.Pedido, produtos *[]entity.Produto) (*entity.Pedido, error)
-	ObterTodos(pagina, limite int, sort string) (*[]entity.Pedido, error)
-	ObterPorNumeroPedido(numeroPedido string) (*entity.Pedido, error)
-	Atualizar(pedido *entity.Pedido) error
-	Deletar(id string) error
-}
-
-type ProdutoUseCasesInterface interface {
-	Inserir(produto *entity.Produto) error
-	ObterTodosProdutos() (*[]entity.Produto, error)
-	ObterPorCategoria(categoria entity.CategoriaProduto) (*[]entity.Produto, error)
-}
-
 type ClienteUseCasesInterface interface {
 	Inserir(cliente *entity.Cliente) error
 	Atualizar(cliente *entity.Cliente) error
 	ObterTodos() (*[]entity.Cliente, error)
+}
+type ClienteDbInterface interface {
+	Inserir(cliente *entity.Cliente) error
+	Atualizar(cliente *entity.Cliente) error
+	ObterTodos() (*[]entity.Cliente, error)
+}
+
+type PedidoUseCasesInterface interface {
+	ObterPedidosEmAberto() (*[]dto.ObterPedidosOutputDto, error)
+	//Inserir(pedido *entity.Pedido, produtos *[]entity.Produto) (*entity.Pedido, error)
+	// ObterPorNumeroPedido(numeroPedido string) (*entity.Pedido, error)
+	// ConsultarStatusPagamento(numeroPedido string) (*entity.Pedido, error)
+	// AtualizarStatusPedido(numeroPedido string, status entity.StatusPedido) error
+}
+type PedidoDbInterface interface {
+	ObterPedidosEmAberto() (*[]entity.Pedido, error)
+	//Inserir(pedido *entity.Pedido, produtos *[]entity.Produto) (*entity.Pedido, error)
+	// ObterPorNumeroPedido(numeroPedido string) (*entity.Pedido, error)
+	// ConsultarStatusPagamento(numeroPedido string) (*entity.Pedido, error)
+	// AtualizarStatusPedido(numeroPedido string, status entity.StatusPedido) error
 }

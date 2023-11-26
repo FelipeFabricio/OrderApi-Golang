@@ -6,15 +6,15 @@ import (
 )
 
 type ClienteUseCases struct {
-	clienteRepository interfaces.ClienteRepositoryInterface
+	ClienteDb interfaces.ClienteDbInterface
 }
 
-func NewClienteUseCases(clienteRepository interfaces.ClienteRepositoryInterface) *ClienteUseCases {
-	return &ClienteUseCases{clienteRepository: clienteRepository}
+func NewClienteUseCases(clienteDb interfaces.ClienteDbInterface) *ClienteUseCases {
+	return &ClienteUseCases{ClienteDb: clienteDb}
 }
 
 func (c *ClienteUseCases) ObterTodos() (*[]entity.Cliente, error) {
-	return c.clienteRepository.ObterTodos()
+	return c.ClienteDb.ObterTodos()
 }
 
 func (c *ClienteUseCases) Inserir(cliente *entity.Cliente) error {
@@ -22,9 +22,9 @@ func (c *ClienteUseCases) Inserir(cliente *entity.Cliente) error {
 	if err != nil {
 		return err
 	}
-	return c.clienteRepository.Inserir(novoCliente)
+	return c.ClienteDb.Inserir(novoCliente)
 }
 
 func (c *ClienteUseCases) Atualizar(cliente *entity.Cliente) error {
-	return c.clienteRepository.Atualizar(cliente)
+	return c.ClienteDb.Atualizar(cliente)
 }

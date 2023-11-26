@@ -6,11 +6,11 @@ import (
 )
 
 type ProdutoUseCases struct {
-	ProdutoRepository interfaces.ProdutoRepositoryInterface
+	ProdutoDb interfaces.ProdutoDbInterface
 }
 
-func NewProdutoUseCases(ProdutoRepository interfaces.ProdutoRepositoryInterface) *ProdutoUseCases {
-	return &ProdutoUseCases{ProdutoRepository: ProdutoRepository}
+func NewProdutoUseCases(produtoDb interfaces.ProdutoDbInterface) *ProdutoUseCases {
+	return &ProdutoUseCases{ProdutoDb: produtoDb}
 }
 
 func (p *ProdutoUseCases) Inserir(produto *entity.Produto) error {
@@ -18,13 +18,13 @@ func (p *ProdutoUseCases) Inserir(produto *entity.Produto) error {
 	if err != nil {
 		return err
 	}
-	return p.ProdutoRepository.Inserir(novoProduto)
+	return p.ProdutoDb.Inserir(novoProduto)
 }
 
 func (p *ProdutoUseCases) ObterTodosProdutos() (*[]entity.Produto, error) {
-	return p.ProdutoRepository.ObterTodos()
+	return p.ProdutoDb.ObterTodos()
 }
 
 func (p *ProdutoUseCases) ObterPorCategoria(categoria entity.CategoriaProduto) (*[]entity.Produto, error) {
-	return p.ProdutoRepository.ObterPorCategoria(categoria)
+	return p.ProdutoDb.ObterPorCategoria(categoria)
 }

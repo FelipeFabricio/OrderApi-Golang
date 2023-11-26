@@ -39,24 +39,31 @@ func main() {
 	}
 	fmt.Printf("Conectado ao banco de dados na porta %s!\n", configs.DBPort)
 
-	produtoRepository := database.NewProdutoDb(db)
-	produtoUseCases := usecase.NewProdutoUseCases(produtoRepository)
-	produtoHandler := handler.NewProdutoHandler(produtoUseCases)
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
+	produtoDb := database.NewProdutoDb(db)
+	produtoUseCases := usecase.NewProdutoUseCases(produtoDb)
+	produtoHandler := handler.NewProdutoHandler(produtoUseCases)
 	r.Route("/produtos", func(r chi.Router) {
 		r.Get("/", produtoHandler.ObterTodosProdutos)
 		r.Post("/", produtoHandler.InserirProduto)
 		r.Get("/{categoria}", produtoHandler.ObterPorCategoria)
 	})
 
-	clienteRepository := database.NewClienteDb(db)
-	clienteUseCases := usecase.NewClienteUseCases(clienteRepository)
+	clienteDb := database.NewClienteDb(db)
+	clienteUseCases := usecase.NewClienteUseCases(clienteDb)
 	clienteHandler := handler.NewClienteHandler(clienteUseCases)
 	r.Route("/clientes", func(r chi.Router) {
 		r.Post("/", clienteHandler.Inserir)
 		r.Get("/", clienteHandler.ObterTodos)
 		r.Put("/{id}", clienteHandler.Atualizar)
+	})
+
+	pedidoDb := database.NewPedidoDb(db)
+	pedidoUseCases := usecase.NewPedidoUseCases(pedidoDb)
+	pedidoHandler := handler.NewPedidoHandler(pedidoUseCases)
+	r.Route("/pedidos", func(r chi.Router) {
+		r.Get("/", pedidoHandler.ObterPedidosEmAberto)
 	})
 
 	r.Get("/docs/*", httpSwagger.Handler(httpSwagger.URL("http://localhost:8000/docs/doc.json")))

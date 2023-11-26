@@ -146,6 +146,44 @@
                 }
             }
         },
+        "/pedidos": {
+            "get": {
+                "description": "Obtém todos os Pedidos que ainda não foram Finalizados",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Pedidos"
+                ],
+                "summary": "Listar Pedido em Aberto",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/entity.Pedido"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/handler.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.Error"
+                        }
+                    }
+                }
+            }
+        },
         "/produtos": {
             "get": {
                 "description": "Obtém todos os Produtos cadastrados",
@@ -349,6 +387,29 @@
                 }
             }
         },
+        "entity.Pedido": {
+            "type": "object",
+            "properties": {
+                "clienteId": {
+                    "type": "string"
+                },
+                "data": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "numeroPedido": {
+                    "type": "integer"
+                },
+                "status": {
+                    "$ref": "#/definitions/entity.StatusPedido"
+                },
+                "valor": {
+                    "type": "number"
+                }
+            }
+        },
         "entity.Produto": {
             "type": "object",
             "properties": {
@@ -368,6 +429,21 @@
                     "type": "number"
                 }
             }
+        },
+        "entity.StatusPedido": {
+            "type": "integer",
+            "enum": [
+                0,
+                1,
+                2,
+                3
+            ],
+            "x-enum-varnames": [
+                "Recebido",
+                "EmPreparacao",
+                "Pronto",
+                "Finalizado"
+            ]
         },
         "handler.Error": {
             "type": "object",

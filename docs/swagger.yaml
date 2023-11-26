@@ -47,6 +47,21 @@ definitions:
       nome:
         type: string
     type: object
+  entity.Pedido:
+    properties:
+      clienteId:
+        type: string
+      data:
+        type: string
+      id:
+        type: string
+      numeroPedido:
+        type: integer
+      status:
+        $ref: '#/definitions/entity.StatusPedido'
+      valor:
+        type: number
+    type: object
   entity.Produto:
     properties:
       categoria:
@@ -60,6 +75,18 @@ definitions:
       valor:
         type: number
     type: object
+  entity.StatusPedido:
+    enum:
+    - 0
+    - 1
+    - 2
+    - 3
+    type: integer
+    x-enum-varnames:
+    - Recebido
+    - EmPreparacao
+    - Pronto
+    - Finalizado
   handler.Error:
     properties:
       message:
@@ -163,6 +190,31 @@ paths:
       summary: Atualizar Cliente
       tags:
       - Clientes
+  /pedidos:
+    get:
+      consumes:
+      - application/json
+      description: Obtém todos os Pedidos que ainda não foram Finalizados
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/entity.Pedido'
+            type: array
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.Error'
+      summary: Listar Pedido em Aberto
+      tags:
+      - Pedidos
   /produtos:
     get:
       consumes:
