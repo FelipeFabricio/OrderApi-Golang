@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/felipefabricio/wonder-food/internal/dto"
 	"github.com/felipefabricio/wonder-food/internal/entity"
 	interfaces "github.com/felipefabricio/wonder-food/internal/entity/interfaces"
 	"github.com/go-chi/chi"
@@ -24,7 +25,7 @@ func NewProdutoHandler(useCases interfaces.ProdutoUseCasesInterface) *ProdutoHan
 // @Tags         Produtos
 // @Accept       json
 // @Produce      json
-// @Success      200       {array}   entity.Produto
+// @Success      200       {array}   dto.ObterProdutoOutputDto
 // @Failure      404       {object}  Error
 // @Failure      500       {object}  Error
 // @Router       /produtos [get]
@@ -47,7 +48,7 @@ func (p *ProdutoHandler) ObterTodosProdutos(w http.ResponseWriter, r *http.Reque
 // @Accept       json
 // @Produce      json
 // @Param        categoria path      int  true  "Categoria Produto"
-// @Success      200       {array}   entity.Produto
+// @Success      200       {array}   dto.ObterProdutoOutputDto
 // @Failure      404       {object}  Error
 // @Failure      400       {object}  Error
 // @Failure      500       {object}  Error
@@ -75,13 +76,13 @@ func (p *ProdutoHandler) ObterPorCategoria(w http.ResponseWriter, r *http.Reques
 // @Tags         Produtos
 // @Accept       json
 // @Produce      json
-// @Param        request     body      dto.ProdutoDto  true  "Request do Produto"
+// @Param        request     body      dto.CriarProdutoInputDto  true  "Request do Produto"
 // @Success      201
-// @Failure      400       {object}  Error
+// @Failure      400         {object}  Error
 // @Failure      500         {object}  Error
 // @Router       /produtos [post]
 func (p *ProdutoHandler) InserirProduto(w http.ResponseWriter, r *http.Request) {
-	var produto entity.Produto
+	var produto dto.CriarProdutoInputDto
 	err := json.NewDecoder(r.Body).Decode(&produto)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)

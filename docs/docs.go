@@ -168,7 +168,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/entity.Pedido"
+                                "$ref": "#/definitions/dto.ObterPedidosOutputDto"
                             }
                         }
                     },
@@ -206,7 +206,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/entity.Produto"
+                                "$ref": "#/definitions/dto.ObterProdutoOutputDto"
                             }
                         }
                     },
@@ -243,7 +243,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.ProdutoDto"
+                            "$ref": "#/definitions/dto.CriarProdutoInputDto"
                         }
                     }
                 ],
@@ -294,7 +294,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/entity.Produto"
+                                "$ref": "#/definitions/dto.ObterProdutoOutputDto"
                             }
                         }
                     },
@@ -352,6 +352,23 @@ const docTemplate = `{
                 }
             }
         },
+        "dto.CriarProdutoInputDto": {
+            "type": "object",
+            "properties": {
+                "categoria": {
+                    "$ref": "#/definitions/entity.CategoriaProduto"
+                },
+                "descricao": {
+                    "type": "string"
+                },
+                "nome": {
+                    "type": "string"
+                },
+                "valor": {
+                    "type": "number"
+                }
+            }
+        },
         "dto.ObterClienteOutputDto": {
             "type": "object",
             "properties": {
@@ -369,11 +386,34 @@ const docTemplate = `{
                 }
             }
         },
-        "dto.ProdutoDto": {
+        "dto.ObterPedidosOutputDto": {
+            "type": "object",
+            "properties": {
+                "clienteId": {
+                    "type": "string"
+                },
+                "data": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "numeroPedido": {
+                    "type": "integer"
+                },
+                "status": {
+                    "$ref": "#/definitions/entity.StatusPedido"
+                },
+                "valor": {
+                    "type": "number"
+                }
+            }
+        },
+        "dto.ObterProdutoOutputDto": {
             "type": "object",
             "properties": {
                 "categoria": {
-                    "type": "integer"
+                    "$ref": "#/definitions/entity.CategoriaProduto"
                 },
                 "descricao": {
                     "type": "string"
@@ -403,55 +443,6 @@ const docTemplate = `{
                 "Sobremesa",
                 "Acompanhamento"
             ]
-        },
-        "entity.Pedido": {
-            "type": "object",
-            "properties": {
-                "clienteId": {
-                    "type": "string"
-                },
-                "data": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "numeroPedido": {
-                    "type": "integer"
-                },
-                "produtos": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/entity.Produto"
-                    }
-                },
-                "status": {
-                    "$ref": "#/definitions/entity.StatusPedido"
-                },
-                "valor": {
-                    "type": "number"
-                }
-            }
-        },
-        "entity.Produto": {
-            "type": "object",
-            "properties": {
-                "categoria": {
-                    "$ref": "#/definitions/entity.CategoriaProduto"
-                },
-                "descricao": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "nome": {
-                    "type": "string"
-                },
-                "valor": {
-                    "type": "number"
-                }
-            }
         },
         "entity.StatusPedido": {
             "type": "integer",

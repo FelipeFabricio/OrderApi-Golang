@@ -6,9 +6,9 @@ import (
 )
 
 type ProdutoUseCasesInterface interface {
-	Inserir(produto *entity.Produto) error
-	ObterTodosProdutos() (*[]entity.Produto, error)
-	ObterPorCategoria(categoria entity.CategoriaProduto) (*[]entity.Produto, error)
+	Inserir(produto *dto.CriarProdutoInputDto) error
+	ObterTodosProdutos() (*[]dto.ObterProdutoOutputDto, error)
+	ObterPorCategoria(categoria entity.CategoriaProduto) (*[]dto.ObterProdutoOutputDto, error)
 }
 type ProdutoDbInterface interface {
 	Inserir(produto *entity.Produto) error

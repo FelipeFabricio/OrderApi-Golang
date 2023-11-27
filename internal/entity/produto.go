@@ -22,7 +22,7 @@ type Produto struct {
 
 func (p *Produto) NewProduto(nome, descricao string, categoria CategoriaProduto, valor decimal.Decimal) (*Produto, error) {
 
-	if !p.ValidarCategoriaProduto() {
+	if !p.ValidarCategoriaProduto(categoria) {
 		return nil, ErrCategoriaProdutoInvalida
 	}
 
@@ -36,6 +36,6 @@ func (p *Produto) NewProduto(nome, descricao string, categoria CategoriaProduto,
 	return novoProduto, nil
 }
 
-func (p *Produto) ValidarCategoriaProduto() bool {
-	return p.Categoria >= Lanche && p.Categoria <= Acompanhamento
+func (p *Produto) ValidarCategoriaProduto(categoria CategoriaProduto) bool {
+	return categoria >= Lanche && categoria <= Acompanhamento
 }

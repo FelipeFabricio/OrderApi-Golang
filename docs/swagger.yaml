@@ -20,6 +20,17 @@ definitions:
       nome:
         type: string
     type: object
+  dto.CriarProdutoInputDto:
+    properties:
+      categoria:
+        $ref: '#/definitions/entity.CategoriaProduto'
+      descricao:
+        type: string
+      nome:
+        type: string
+      valor:
+        type: number
+    type: object
   dto.ObterClienteOutputDto:
     properties:
       cpf:
@@ -31,10 +42,25 @@ definitions:
       nome:
         type: string
     type: object
-  dto.ProdutoDto:
+  dto.ObterPedidosOutputDto:
+    properties:
+      clienteId:
+        type: string
+      data:
+        type: string
+      id:
+        type: string
+      numeroPedido:
+        type: integer
+      status:
+        $ref: '#/definitions/entity.StatusPedido'
+      valor:
+        type: number
+    type: object
+  dto.ObterProdutoOutputDto:
     properties:
       categoria:
-        type: integer
+        $ref: '#/definitions/entity.CategoriaProduto'
       descricao:
         type: string
       id:
@@ -56,38 +82,6 @@ definitions:
     - Bebida
     - Sobremesa
     - Acompanhamento
-  entity.Pedido:
-    properties:
-      clienteId:
-        type: string
-      data:
-        type: string
-      id:
-        type: string
-      numeroPedido:
-        type: integer
-      produtos:
-        items:
-          $ref: '#/definitions/entity.Produto'
-        type: array
-      status:
-        $ref: '#/definitions/entity.StatusPedido'
-      valor:
-        type: number
-    type: object
-  entity.Produto:
-    properties:
-      categoria:
-        $ref: '#/definitions/entity.CategoriaProduto'
-      descricao:
-        type: string
-      id:
-        type: string
-      nome:
-        type: string
-      valor:
-        type: number
-    type: object
   entity.StatusPedido:
     enum:
     - 0
@@ -213,7 +207,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/entity.Pedido'
+              $ref: '#/definitions/dto.ObterPedidosOutputDto'
             type: array
         "404":
           description: Not Found
@@ -238,7 +232,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/entity.Produto'
+              $ref: '#/definitions/dto.ObterProdutoOutputDto'
             type: array
         "404":
           description: Not Found
@@ -261,7 +255,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/dto.ProdutoDto'
+          $ref: '#/definitions/dto.CriarProdutoInputDto'
       produces:
       - application/json
       responses:
@@ -296,7 +290,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/entity.Produto'
+              $ref: '#/definitions/dto.ObterProdutoOutputDto'
             type: array
         "400":
           description: Bad Request
