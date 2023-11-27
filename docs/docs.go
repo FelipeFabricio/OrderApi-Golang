@@ -39,7 +39,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/entity.Cliente"
+                                "$ref": "#/definitions/dto.ObterClienteOutputDto"
                             }
                         }
                     },
@@ -76,7 +76,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.ClienteDto"
+                            "$ref": "#/definitions/dto.CriarClienteInputDto"
                         }
                     }
                 ],
@@ -126,16 +126,13 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.ClienteDto"
+                            "$ref": "#/definitions/dto.AtualizarClienteInputDto"
                         }
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/entity.Cliente"
-                        }
+                        "description": "OK"
                     },
                     "404": {
                         "description": "Not Found",
@@ -324,7 +321,38 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "dto.ClienteDto": {
+        "dto.AtualizarClienteInputDto": {
+            "type": "object",
+            "properties": {
+                "cpf": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "nome": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.CriarClienteInputDto": {
+            "type": "object",
+            "properties": {
+                "cpf": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "nome": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.ObterClienteOutputDto": {
             "type": "object",
             "properties": {
                 "cpf": {
@@ -376,23 +404,6 @@ const docTemplate = `{
                 "Acompanhamento"
             ]
         },
-        "entity.Cliente": {
-            "type": "object",
-            "properties": {
-                "cpf": {
-                    "type": "string"
-                },
-                "email": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "nome": {
-                    "type": "string"
-                }
-            }
-        },
         "entity.Pedido": {
             "type": "object",
             "properties": {
@@ -407,6 +418,12 @@ const docTemplate = `{
                 },
                 "numeroPedido": {
                     "type": "integer"
+                },
+                "produtos": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/entity.Produto"
+                    }
                 },
                 "status": {
                     "$ref": "#/definitions/entity.StatusPedido"

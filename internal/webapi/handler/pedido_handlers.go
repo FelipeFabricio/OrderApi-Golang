@@ -23,7 +23,7 @@ func NewPedidoHandler(pedidoUseCases interfaces.PedidoUseCasesInterface) *Pedido
 // @Tags         Pedidos
 // @Accept       json
 // @Produce      json
-// @Success      200       {array}   entity.Pedido
+// @Success      200       {array}   dto.ObterPedidosOutputDto
 // @Failure      404       {object}  Error
 // @Failure      500       {object}  Error
 // @Router       /pedidos  [get]

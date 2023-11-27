@@ -1,5 +1,6 @@
 package entity
 
+//go:generate stringer -type=StatusPedido
 type StatusPedido int
 
 const (

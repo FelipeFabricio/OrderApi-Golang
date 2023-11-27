@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/felipefabricio/wonder-food/internal/entity"
+	"github.com/felipefabricio/wonder-food/internal/dto"
 	interfaces "github.com/felipefabricio/wonder-food/internal/entity/interfaces"
 	"github.com/go-chi/chi"
 )
@@ -23,13 +23,13 @@ func NewClienteHandler(useCases interfaces.ClienteUseCasesInterface) *ClienteHan
 // @Tags         Clientes
 // @Accept       json
 // @Produce      json
-// @Param        request     body      dto.ClienteDto  true  "Dados para cadastro do Cliente"
+// @Param        request     body      dto.CriarClienteInputDto  true  "Dados para cadastro do Cliente"
 // @Success      201
 // @Failure      400         {object}  Error
 // @Failure      500         {object}  Error
 // @Router       /clientes   [post]
 func (c *ClienteHandler) Inserir(w http.ResponseWriter, r *http.Request) {
-	var cliente entity.Cliente
+	var cliente dto.CriarClienteInputDto
 	err := json.NewDecoder(r.Body).Decode(&cliente)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
@@ -50,7 +50,7 @@ func (c *ClienteHandler) Inserir(w http.ResponseWriter, r *http.Request) {
 // @Tags         Clientes
 // @Accept       json
 // @Produce      json
-// @Success      200        {array}   entity.Cliente
+// @Success      200        {array}   dto.ObterClienteOutputDto
 // @Failure      404        {object}  Error
 // @Failure      500        {object}  Error
 // @Router       /clientes  [get]
@@ -73,13 +73,13 @@ func (c *ClienteHandler) ObterTodos(w http.ResponseWriter, r *http.Request) {
 // @Accept       json
 // @Produce      json
 // @Param        id              path      string          true  "Id do Cliente"
-// @Param        request         body      dto.ClienteDto  true  "Dados para atualizar o Cliente"
-// @Success      200             {object}  entity.Cliente
+// @Param        request         body      dto.AtualizarClienteInputDto  true  "Dados para atualizar o Cliente"
+// @Success      200
 // @Failure      404             {object}  Error
 // @Failure      500             {object}  Error
 // @Router       /clientes/{id}  [put]
 func (c *ClienteHandler) Atualizar(w http.ResponseWriter, r *http.Request) {
-	var cliente entity.Cliente
+	var cliente dto.AtualizarClienteInputDto
 	err := json.NewDecoder(r.Body).Decode(&cliente)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)

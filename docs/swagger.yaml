@@ -1,6 +1,26 @@
 basePath: /
 definitions:
-  dto.ClienteDto:
+  dto.AtualizarClienteInputDto:
+    properties:
+      cpf:
+        type: string
+      email:
+        type: string
+      id:
+        type: string
+      nome:
+        type: string
+    type: object
+  dto.CriarClienteInputDto:
+    properties:
+      cpf:
+        type: string
+      email:
+        type: string
+      nome:
+        type: string
+    type: object
+  dto.ObterClienteOutputDto:
     properties:
       cpf:
         type: string
@@ -36,17 +56,6 @@ definitions:
     - Bebida
     - Sobremesa
     - Acompanhamento
-  entity.Cliente:
-    properties:
-      cpf:
-        type: string
-      email:
-        type: string
-      id:
-        type: string
-      nome:
-        type: string
-    type: object
   entity.Pedido:
     properties:
       clienteId:
@@ -57,6 +66,10 @@ definitions:
         type: string
       numeroPedido:
         type: integer
+      produtos:
+        items:
+          $ref: '#/definitions/entity.Produto'
+        type: array
       status:
         $ref: '#/definitions/entity.StatusPedido'
       valor:
@@ -115,7 +128,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/entity.Cliente'
+              $ref: '#/definitions/dto.ObterClienteOutputDto'
             type: array
         "404":
           description: Not Found
@@ -138,7 +151,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/dto.ClienteDto'
+          $ref: '#/definitions/dto.CriarClienteInputDto'
       produces:
       - application/json
       responses:
@@ -171,14 +184,12 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/dto.ClienteDto'
+          $ref: '#/definitions/dto.AtualizarClienteInputDto'
       produces:
       - application/json
       responses:
         "200":
           description: OK
-          schema:
-            $ref: '#/definitions/entity.Cliente'
         "404":
           description: Not Found
           schema:

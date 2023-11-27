@@ -19,8 +19,8 @@ type Cliente struct {
 
 func (c *Cliente) NewCliente(nome, email, cpf string) (*Cliente, error) {
 
-	if !c.ValidarDadosClientes() {
-		return nil, ErrCategoriaProdutoInvalida
+	if !c.ValidarDadosClientes(nome, email, cpf) {
+		return nil, ErrDadosInvalidados
 	}
 
 	novoCliente := &Cliente{
@@ -32,6 +32,6 @@ func (c *Cliente) NewCliente(nome, email, cpf string) (*Cliente, error) {
 	return novoCliente, nil
 }
 
-func (c *Cliente) ValidarDadosClientes() bool {
-	return c.Nome != "" && c.Email != "" && c.Cpf != ""
+func (c *Cliente) ValidarDadosClientes(nome, email, cpf string) bool {
+	return nome != "" && email != "" && cpf != ""
 }

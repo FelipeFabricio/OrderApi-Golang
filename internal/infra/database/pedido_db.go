@@ -17,7 +17,11 @@ func NewPedidoDb(db *gorm.DB) *PedidoDb {
 
 func (p *PedidoDb) ObterPedidosEmAberto() (*[]entity.Pedido, error) {
 	var pedidos []entity.Pedido
-	p.Db.Raw("SELECT * FROM wonderfood.pedidos WHERE status <> 3 ORDER BY status DESC, data ASC;").Scan(&pedidos)
+	err := p.Db.Find(&pedidos, "Status = ?", 3).Order("status DESC, data ASC").Error
+	if err != nil {
+		return nil, err
+	}
+	//p.Db.Raw("SELECT * FROM wonderfood.pedidos WHERE status <> 3 ORDER BY status DESC, data ASC;").Scan(&pedidos)
 	return &pedidos, nil
 }
 

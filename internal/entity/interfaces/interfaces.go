@@ -19,9 +19,9 @@ type ProdutoDbInterface interface {
 }
 
 type ClienteUseCasesInterface interface {
-	Inserir(cliente *entity.Cliente) error
-	Atualizar(cliente *entity.Cliente) error
-	ObterTodos() (*[]entity.Cliente, error)
+	Inserir(cliente *dto.CriarClienteInputDto) error
+	Atualizar(cliente *dto.AtualizarClienteInputDto) error
+	ObterTodos() (*[]dto.ObterClienteOutputDto, error)
 }
 type ClienteDbInterface interface {
 	Inserir(cliente *entity.Cliente) error
