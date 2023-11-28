@@ -185,6 +185,47 @@ const docTemplate = `{
                         }
                     }
                 }
+            },
+            "post": {
+                "description": "Cria um novo Pedido",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Pedidos"
+                ],
+                "summary": "Inserir Pedido",
+                "parameters": [
+                    {
+                        "description": "Dados para Cadastro do Pedido",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.CriarPedidoInputDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handler.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.Error"
+                        }
+                    }
+                }
             }
         },
         "/produtos": {
@@ -352,6 +393,20 @@ const docTemplate = `{
                 }
             }
         },
+        "dto.CriarPedidoInputDto": {
+            "type": "object",
+            "properties": {
+                "clienteId": {
+                    "type": "string"
+                },
+                "produtos": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dto.ProdutoPedidoDto"
+                    }
+                }
+            }
+        },
         "dto.CriarProdutoInputDto": {
             "type": "object",
             "properties": {
@@ -426,6 +481,17 @@ const docTemplate = `{
                 },
                 "valor": {
                     "type": "number"
+                }
+            }
+        },
+        "dto.ProdutoPedidoDto": {
+            "type": "object",
+            "properties": {
+                "produtoId": {
+                    "type": "string"
+                },
+                "quantidade": {
+                    "type": "integer"
                 }
             }
         },

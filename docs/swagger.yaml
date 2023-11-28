@@ -20,6 +20,15 @@ definitions:
       nome:
         type: string
     type: object
+  dto.CriarPedidoInputDto:
+    properties:
+      clienteId:
+        type: string
+      produtos:
+        items:
+          $ref: '#/definitions/dto.ProdutoPedidoDto'
+        type: array
+    type: object
   dto.CriarProdutoInputDto:
     properties:
       categoria:
@@ -69,6 +78,13 @@ definitions:
         type: string
       valor:
         type: number
+    type: object
+  dto.ProdutoPedidoDto:
+    properties:
+      produtoId:
+        type: string
+      quantidade:
+        type: integer
     type: object
   entity.CategoriaProduto:
     enum:
@@ -218,6 +234,33 @@ paths:
           schema:
             $ref: '#/definitions/handler.Error'
       summary: Listar Pedido em Aberto
+      tags:
+      - Pedidos
+    post:
+      consumes:
+      - application/json
+      description: Cria um novo Pedido
+      parameters:
+      - description: Dados para Cadastro do Pedido
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CriarPedidoInputDto'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.Error'
+      summary: Inserir Pedido
       tags:
       - Pedidos
   /produtos:

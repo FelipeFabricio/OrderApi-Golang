@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
+	"github.com/felipefabricio/wonder-food/internal/dto"
 	interfaces "github.com/felipefabricio/wonder-food/internal/entity/interfaces"
 )
 
@@ -37,4 +38,31 @@ func (p *PedidoHandler) ObterPedidosEmAberto(w http.ResponseWriter, r *http.Requ
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(pedidos)
+}
+
+// CriarPedidos godoc
+// @Summary      Inserir Pedido
+// @Description  Cria um novo Pedido
+// @Tags         Pedidos
+// @Accept       json
+// @Produce      json
+// @Param        request     body      dto.CriarPedidoInputDto  true  "Dados para Cadastro do Pedido"
+// @Success      201
+// @Failure      400         {object}  Error
+// @Failure      500         {object}  Error
+// @Router       /pedidos [post]
+func (p *PedidoHandler) Inserir(w http.ResponseWriter, r *http.Request) {
+	var pedidoDto dto.CriarPedidoInputDto
+	err := json.NewDecoder(r.Body).Decode(&pedidoDto)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+	defer r.Body.Close()
+	err = p.PedidoUseCases.Inserir(&pedidoDto)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+	w.WriteHeader(http.StatusCreated)
 }

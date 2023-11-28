@@ -32,7 +32,7 @@ func main() {
 		panic(err)
 	}
 
-	connectionString := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", configs.DBUser, configs.DBPassword, configs.DBHost, configs.DBPort, configs.DBName)
+	connectionString := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", configs.DBUser, configs.DBPassword, configs.DBHost, configs.DBPort, configs.DBName)
 	db, err := gorm.Open(mysql.Open(connectionString), &gorm.Config{})
 	if err != nil {
 		panic(err)
@@ -60,10 +60,11 @@ func main() {
 	})
 
 	pedidoDb := database.NewPedidoDb(db)
-	pedidoUseCases := usecase.NewPedidoUseCases(pedidoDb)
+	pedidoUseCases := usecase.NewPedidoUseCases(pedidoDb, produtoDb)
 	pedidoHandler := handler.NewPedidoHandler(pedidoUseCases)
 	r.Route("/pedidos", func(r chi.Router) {
 		r.Get("/", pedidoHandler.ObterPedidosEmAberto)
+		r.Post("/", pedidoHandler.Inserir)
 	})
 
 	r.Get("/docs/*", httpSwagger.Handler(httpSwagger.URL("http://localhost:8000/docs/doc.json")))

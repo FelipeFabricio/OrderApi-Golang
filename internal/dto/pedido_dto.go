@@ -10,7 +10,7 @@ import (
 
 type CriarPedidoInputDto struct {
 	ClienteId uuid.UUID          `json:"clienteId"`
-	Produto   []ProdutoPedidoDto `json:"produtos"`
+	Produtos  []ProdutoPedidoDto `json:"produtos"`
 }
 
 type CriarPedidoOutputDto struct {
@@ -19,7 +19,7 @@ type CriarPedidoOutputDto struct {
 	Valor        decimal.Decimal     `json:"valor"`
 	Status       entity.StatusPedido `json:"status"`
 	Data         time.Time           `json:"data"`
-	NumeroPedido uint64              `json:"numeroPedido"`
+	NumeroPedido int                 `json:"numeroPedido"`
 }
 
 type ObterPedidosOutputDto struct {
@@ -28,11 +28,10 @@ type ObterPedidosOutputDto struct {
 	Valor        decimal.Decimal     `json:"valor"`
 	Status       entity.StatusPedido `json:"status"`
 	Data         time.Time           `json:"data"`
-	NumeroPedido uint64              `json:"numeroPedido"`
+	NumeroPedido int                 `json:"numeroPedido"`
 }
 
 type ProdutoPedidoDto struct {
-	PedidoId   string `json:"pedidoId"`
-	ProdutoId  string `json:"produtoId"`
-	Quantidade uint8  `json:"quantidade"`
+	ProdutoId  uuid.UUID `json:"produtoId"`
+	Quantidade uint8     `json:"quantidade"`
 }

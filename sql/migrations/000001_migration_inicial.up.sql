@@ -27,17 +27,18 @@ INSERT INTO `produtos` (`id`, `nome`, `descricao`, `categoria`, `valor`) VALUES
 
 CREATE TABLE IF NOT EXISTS `pedidos` (
   `id` varchar(36) NOT NULL,
-  `cliente_id` varchar(36) NOT NULL,
+  `clienteId` varchar(36) NOT NULL,
   `valor` decimal(8,2) NOT NULL,
   `status` smallint NOT NULL,
   `data` datetime  DEFAULT now(),
-  `numeroPedido` int NOT NULL,
+  `numeroPedido` int NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`id`),
-  KEY `fk_pedidos_clientes_idx` (`cliente_id`),
-  CONSTRAINT `fk_pedidos_clientes` FOREIGN KEY (`cliente_id`) REFERENCES `clientes` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  KEY `fk_pedidos_clientes_idx` (`clienteId`),
+  UNIQUE KEY (`numeroPedido`),
+  CONSTRAINT `fk_pedidos_clientes` FOREIGN KEY (`clienteId`) REFERENCES `clientes` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO `pedidos` (`id`, `cliente_id`, `valor`, `status`, `numeroPedido`) VALUES
+INSERT INTO `pedidos` (`id`, `clienteId`, `valor`, `status`, `numeroPedido`) VALUES
 ('1a367798-fee1-49cd-a686-fc3e04577e2e', '250cc130-f258-4e32-abdd-5a457888c513', 59.29, 3, 1),
 ('adf4e9b1-4b8b-434d-8790-112f1d9b2bcf', 'ef1db1e1-f913-44be-b850-ad0b08b990b0', 40.80, 0, 2),
 ('17584894-b0ca-4338-b77e-994f104bebea', '250cc130-f258-4e32-abdd-5a457888c513', 59.29, 1, 3),

@@ -30,7 +30,7 @@ func (p *ProdutoDb) ObterPorCategoria(categoria entity.CategoriaProduto) (*[]ent
 }
 
 func (p *ProdutoDb) Atualizar(produto *entity.Produto) error {
-	_, err := p.obterPorId(produto.ID.String())
+	_, err := p.ObterPorId(produto.ID.String())
 	if err != nil {
 		return err
 	}
@@ -38,14 +38,14 @@ func (p *ProdutoDb) Atualizar(produto *entity.Produto) error {
 }
 
 func (p *ProdutoDb) Deletar(id string) error {
-	produto, err := p.obterPorId(id)
+	produto, err := p.ObterPorId(id)
 	if err != nil {
 		return err
 	}
 	return p.DB.Delete(produto).Error
 }
 
-func (p *ProdutoDb) obterPorId(id string) (*entity.Produto, error) {
+func (p *ProdutoDb) ObterPorId(id string) (*entity.Produto, error) {
 	var produto entity.Produto
 	err := p.DB.First(&produto, "Id = ?", id).Error
 	return &produto, err

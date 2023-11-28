@@ -15,15 +15,15 @@ var (
 
 type Pedido struct {
 	ID           uuid.UUID       `json:"id"`
-	ClienteId    uuid.UUID       `json:"clienteId"`
+	ClienteId    uuid.UUID       `gorm:"column:clienteId"`
 	Valor        decimal.Decimal `json:"valor"`
 	Status       StatusPedido    `json:"status"`
 	Data         time.Time       `json:"data"`
-	NumeroPedido uint64          `json:"numeroPedido"`
-	Produtos     []Produto       `json:"produtos"`
+	NumeroPedido int             `gorm:"column:numeroPedido"`
+	Produtos     []ProdutoPedido `gorm:"foreignKey:PedidoId;references:ID"`
 }
 
-func NewPedido(clienteId uuid.UUID, produtos *[]Produto) (*Pedido, error) {
+func (p *Pedido) NewPedido(clienteId uuid.UUID, produtos *[]ProdutoPedido) (*Pedido, error) {
 	if len(*produtos) == 0 {
 		return nil, ErrPedidoSemProdutos
 	}
@@ -36,16 +36,8 @@ func NewPedido(clienteId uuid.UUID, produtos *[]Produto) (*Pedido, error) {
 		ID:        uuid.New(),
 		ClienteId: clienteId,
 		Produtos:  *produtos,
+		Status:    0,
 	}
-	pedido.CalcularValorPedido()
 
 	return pedido, nil
-}
-
-func (p *Pedido) CalcularValorPedido() {
-	var valor decimal.Decimal
-	for _, produto := range p.Produtos {
-		valor = valor.Add(produto.Valor)
-	}
-	p.Valor = valor
 }
