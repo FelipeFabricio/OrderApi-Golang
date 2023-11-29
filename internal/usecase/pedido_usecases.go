@@ -2,10 +2,12 @@ package usecase
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/felipefabricio/wonder-food/internal/dto"
 	"github.com/felipefabricio/wonder-food/internal/entity"
 	interfaces "github.com/felipefabricio/wonder-food/internal/entity/interfaces"
+	"github.com/google/uuid"
 	"github.com/shopspring/decimal"
 )
 
@@ -43,28 +45,28 @@ func (p *PedidoUseCases) ObterPedidosEmAberto() (*[]dto.ObterPedidosOutputDto, e
 }
 
 func (p *PedidoUseCases) Inserir(pedidoDto *dto.CriarPedidoInputDto) error {
-	var pedido *entity.Pedido
+	err := p.ValidarDadosPedido(pedidoDto)
+	if err != nil {
+		return err
+	}
 
-	if len(pedidoDto.Produtos) == 0 {
-		return entity.ErrPedidoSemProdutos
+	pedido := entity.Pedido{
+		ID:        uuid.New(),
+		ClienteId: pedidoDto.ClienteId,
+		Data:      time.Now(),
 	}
 
 	for _, produtoDto := range pedidoDto.Produtos {
-		produtosPedido := entity.ProdutoPedido{
+		produtosPedido := entity.ProdutosPedido{
 			PedidoId:   pedido.ID,
 			ProdutoId:  produtoDto.ProdutoId,
 			Quantidade: int(produtoDto.Quantidade),
 		}
-
 		pedido.Produtos = append(pedido.Produtos, produtosPedido)
 	}
 
-	pedidoValidado, err := pedido.NewPedido(pedido.ClienteId, &pedido.Produtos)
-	if err != nil {
-		return err
-	}
-	p.CalcularValorFinalPedido(pedidoValidado)
-	return p.PedidoDb.Inserir(pedidoValidado)
+	p.CalcularValorFinalPedido(&pedido)
+	return p.PedidoDb.Inserir(&pedido)
 }
 
 func (p *PedidoUseCases) CalcularValorFinalPedido(pedido *entity.Pedido) {
@@ -80,4 +82,17 @@ func (p *PedidoUseCases) CalcularValorFinalPedido(pedido *entity.Pedido) {
 		valorFinal = valorFinal.Add(produto.Valor.Mul(decimal.NewFromInt(int64(produtosPedido.Quantidade))))
 	}
 	pedido.Valor = valorFinal
+}
+
+func (p *PedidoUseCases) ValidarDadosPedido(pedidoDto *dto.CriarPedidoInputDto) error {
+	if len(pedidoDto.Produtos) == 0 {
+		return entity.ErrPedidoSemProdutos
+	}
+
+	//TODO: Verificar se o Cliente existe
+	if (pedidoDto.ClienteId == uuid.UUID{}) {
+		return entity.ErrClienteIdInvalido
+	}
+
+	return nil
 }

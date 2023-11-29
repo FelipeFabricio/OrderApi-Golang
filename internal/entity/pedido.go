@@ -14,30 +14,11 @@ var (
 )
 
 type Pedido struct {
-	ID           uuid.UUID       `json:"id"`
-	ClienteId    uuid.UUID       `gorm:"column:clienteId"`
-	Valor        decimal.Decimal `json:"valor"`
-	Status       StatusPedido    `json:"status"`
-	Data         time.Time       `json:"data"`
-	NumeroPedido int             `gorm:"column:numeroPedido"`
-	Produtos     []ProdutoPedido `gorm:"foreignKey:PedidoId;references:ID"`
-}
-
-func (p *Pedido) NewPedido(clienteId uuid.UUID, produtos *[]ProdutoPedido) (*Pedido, error) {
-	if len(*produtos) == 0 {
-		return nil, ErrPedidoSemProdutos
-	}
-
-	if clienteId == uuid.Nil {
-		return nil, ErrClienteIdInvalido
-	}
-
-	pedido := &Pedido{
-		ID:        uuid.New(),
-		ClienteId: clienteId,
-		Produtos:  *produtos,
-		Status:    0,
-	}
-
-	return pedido, nil
+	ID           uuid.UUID        `json:"id"`
+	ClienteId    uuid.UUID        `gorm:"column:clienteId"`
+	Valor        decimal.Decimal  `json:"valor"`
+	Status       StatusPedido     `json:"status"`
+	Data         time.Time        `json:"data"`
+	NumeroPedido int              `gorm:"column:numeroPedido"`
+	Produtos     []ProdutosPedido `gorm:"foreignKey:PedidoId;references:ID"`
 }

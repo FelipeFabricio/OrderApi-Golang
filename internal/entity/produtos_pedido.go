@@ -2,7 +2,7 @@ package entity
 
 import "github.com/google/uuid"
 
-type ProdutoPedido struct {
+type ProdutosPedido struct {
 	PedidoId   uuid.UUID `gorm:"column:pedidoId"`
 	ProdutoId  uuid.UUID `gorm:"column:produtoId"`
 	Quantidade int       `gorm:"column:quantidade"`
