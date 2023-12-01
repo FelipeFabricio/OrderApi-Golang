@@ -14,9 +14,9 @@ type CriarProdutoInputDto struct {
 }
 
 type ObterProdutoOutputDto struct {
-	ID        uuid.UUID               `json:"id"`
-	Nome      string                  `json:"nome"`
-	Descricao string                  `json:"descricao"`
-	Categoria entity.CategoriaProduto `json:"categoria"`
-	Valor     decimal.Decimal         `json:"valor"`
+	ID        uuid.UUID       `json:"id"`
+	Nome      string          `json:"nome"`
+	Descricao string          `json:"descricao"`
+	Categoria string          `json:"categoria"`
+	Valor     decimal.Decimal `json:"valor"`
 }

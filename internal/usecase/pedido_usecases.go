@@ -35,7 +35,7 @@ func (p *PedidoUseCases) ObterPedidosEmAberto() (*[]dto.ObterPedidosOutputDto, e
 			ID:           pedido.ID,
 			ClienteId:    pedido.ClienteId,
 			Valor:        pedido.Valor,
-			Status:       pedido.Status,
+			Status:       pedido.Status.ObterDescricaoStatusPedido(),
 			Data:         pedido.Data,
 			NumeroPedido: pedido.NumeroPedido,
 		})

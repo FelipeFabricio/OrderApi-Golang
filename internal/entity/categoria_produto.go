@@ -1,12 +1,25 @@
 package entity
 
-//go:generate stringer -type=CategoriaProduto
 type CategoriaProduto int
 
-// TODO: Criar validação para saber se o valor informado está no range do enum
 const (
 	Lanche CategoriaProduto = 1 + iota
 	Bebida
 	Sobremesa
 	Acompanhamento
 )
+
+var descricaoCategoriaProduto = [...]string{
+	"",
+	"Lanche",
+	"Bebida",
+	"Sobremesa",
+	"Acompanhamento",
+}
+
+func (c CategoriaProduto) ObterDescricaoCategoriaProduto() string {
+	if c <= 0 || int(c) >= len(descricaoCategoriaProduto) {
+		return "Desconhecido"
+	}
+	return descricaoCategoriaProduto[c]
+}

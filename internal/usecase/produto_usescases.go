@@ -35,7 +35,7 @@ func (p *ProdutoUseCases) ObterTodosProdutos() (*[]dto.ObterProdutoOutputDto, er
 			ID:        produto.ID,
 			Nome:      produto.Nome,
 			Descricao: produto.Descricao,
-			Categoria: produto.Categoria,
+			Categoria: produto.Categoria.ObterDescricaoCategoriaProduto(),
 			Valor:     produto.Valor,
 		})
 	}
@@ -54,7 +54,7 @@ func (p *ProdutoUseCases) ObterPorCategoria(categoria entity.CategoriaProduto) (
 			ID:        produto.ID,
 			Nome:      produto.Nome,
 			Descricao: produto.Descricao,
-			Categoria: produto.Categoria,
+			Categoria: produto.Categoria.ObterDescricaoCategoriaProduto(),
 			Valor:     produto.Valor,
 		})
 	}
