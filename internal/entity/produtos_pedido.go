@@ -7,3 +7,7 @@ type ProdutosPedido struct {
 	ProdutoId  uuid.UUID `gorm:"column:produtoId"`
 	Quantidade int       `gorm:"column:quantidade"`
 }
+
+func (ProdutosPedido) TableName() string {
+	return "produtos_pedido"
+}
