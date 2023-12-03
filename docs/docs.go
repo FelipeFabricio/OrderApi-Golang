@@ -228,6 +228,50 @@ const docTemplate = `{
                 }
             }
         },
+        "/pedidos/{numeropedido}": {
+            "get": {
+                "description": "Consulta o Status atual do Pedido",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Pedidos"
+                ],
+                "summary": "Obtém o Status do Pedido",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Numero do Pedido",
+                        "name": "numeropedido",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ObterStatusPedidoOutputDto"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/handler.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.Error"
+                        }
+                    }
+                }
+            }
+        },
         "/produtos": {
             "get": {
                 "description": "Obtém todos os Produtos cadastrados",
@@ -457,7 +501,7 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "status": {
-                    "$ref": "#/definitions/entity.StatusPedido"
+                    "type": "string"
                 },
                 "valor": {
                     "type": "number"
@@ -468,7 +512,7 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "categoria": {
-                    "$ref": "#/definitions/entity.CategoriaProduto"
+                    "type": "string"
                 },
                 "descricao": {
                     "type": "string"
@@ -477,6 +521,20 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "nome": {
+                    "type": "string"
+                },
+                "valor": {
+                    "type": "number"
+                }
+            }
+        },
+        "dto.ObterStatusPedidoOutputDto": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "string"
+                },
+                "status": {
                     "type": "string"
                 },
                 "valor": {
@@ -508,21 +566,6 @@ const docTemplate = `{
                 "Bebida",
                 "Sobremesa",
                 "Acompanhamento"
-            ]
-        },
-        "entity.StatusPedido": {
-            "type": "integer",
-            "enum": [
-                0,
-                1,
-                2,
-                3
-            ],
-            "x-enum-varnames": [
-                "Recebido",
-                "EmPreparacao",
-                "Pronto",
-                "Finalizado"
             ]
         },
         "handler.Error": {

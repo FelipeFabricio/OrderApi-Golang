@@ -69,6 +69,21 @@ func (p *PedidoUseCases) Inserir(pedidoDto *dto.CriarPedidoInputDto) error {
 	return p.PedidoDb.Inserir(&pedido)
 }
 
+func (p *PedidoUseCases) ConsultarStatusPagamento(numeroPedido int) (*dto.ObterStatusPedidoOutputDto, error) {
+	pedido, err := p.PedidoDb.ObterPorNumeroPedido(numeroPedido)
+	if err != nil {
+		return nil, err
+	}
+
+	pedidoResponse := dto.ObterStatusPedidoOutputDto{
+		Status: pedido.Status.ObterDescricaoStatusPedido(),
+		Valor:  pedido.Valor,
+		Data:   pedido.Data,
+	}
+
+	return &pedidoResponse, nil
+}
+
 func (p *PedidoUseCases) CalcularValorFinalPedido(pedido *entity.Pedido) {
 	var valorFinal decimal.Decimal
 

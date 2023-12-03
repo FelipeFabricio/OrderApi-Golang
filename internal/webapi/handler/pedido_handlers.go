@@ -3,9 +3,11 @@ package handler
 import (
 	"encoding/json"
 	"net/http"
+	"strconv"
 
 	"github.com/felipefabricio/wonder-food/internal/dto"
 	interfaces "github.com/felipefabricio/wonder-food/internal/entity/interfaces"
+	"github.com/go-chi/chi"
 )
 
 type PedidoHandler struct {
@@ -65,4 +67,33 @@ func (p *PedidoHandler) Inserir(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.WriteHeader(http.StatusCreated)
+}
+
+// ObterStatusPedido godoc
+// @Summary      Obtém o Status do Pedido
+// @Description  Consulta o Status atual do Pedido
+// @Tags         Pedidos
+// @Accept       json
+// @Produce      json
+// @Success      200            {object}  dto.ObterStatusPedidoOutputDto
+// @Param        numeropedido   path      int   true  "Numero do Pedido"
+// @Failure      404            {object}  Error
+// @Failure      500            {object}  Error
+// @Router       /pedidos/{numeropedido}  [get]
+func (p *PedidoHandler) ObterStatusPedido(w http.ResponseWriter, r *http.Request) {
+	numeroPedido, err := strconv.Atoi(chi.URLParam(r, "numeropedido"))
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	pedido, err := p.PedidoUseCases.ConsultarStatusPagamento(numeroPedido)
+	if err != nil {
+		w.WriteHeader(http.StatusNotFound)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(pedido)
 }

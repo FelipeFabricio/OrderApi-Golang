@@ -3,15 +3,17 @@ package entity
 type StatusPedido int
 
 const (
-	Recebido StatusPedido = iota
+	AguardandoPagamento StatusPedido = iota
+	Recebido
 	EmPreparacao
 	Pronto
 	Finalizado
 )
 
 var descricaoStatusPedido = [...]string{
+	"Aguardando pagamento",
 	"Recebido",
-	"EmPreparacao",
+	"Em preparação",
 	"Pronto",
 	"Finalizado",
 }

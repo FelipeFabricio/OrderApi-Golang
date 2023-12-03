@@ -62,19 +62,28 @@ definitions:
       numeroPedido:
         type: integer
       status:
-        $ref: '#/definitions/entity.StatusPedido'
+        type: string
       valor:
         type: number
     type: object
   dto.ObterProdutoOutputDto:
     properties:
       categoria:
-        $ref: '#/definitions/entity.CategoriaProduto'
+        type: string
       descricao:
         type: string
       id:
         type: string
       nome:
+        type: string
+      valor:
+        type: number
+    type: object
+  dto.ObterStatusPedidoOutputDto:
+    properties:
+      data:
+        type: string
+      status:
         type: string
       valor:
         type: number
@@ -98,18 +107,6 @@ definitions:
     - Bebida
     - Sobremesa
     - Acompanhamento
-  entity.StatusPedido:
-    enum:
-    - 0
-    - 1
-    - 2
-    - 3
-    type: integer
-    x-enum-varnames:
-    - Recebido
-    - EmPreparacao
-    - Pronto
-    - Finalizado
   handler.Error:
     properties:
       message:
@@ -261,6 +258,35 @@ paths:
           schema:
             $ref: '#/definitions/handler.Error'
       summary: Inserir Pedido
+      tags:
+      - Pedidos
+  /pedidos/{numeropedido}:
+    get:
+      consumes:
+      - application/json
+      description: Consulta o Status atual do Pedido
+      parameters:
+      - description: Numero do Pedido
+        in: path
+        name: numeropedido
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.ObterStatusPedidoOutputDto'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.Error'
+      summary: Obtém o Status do Pedido
       tags:
       - Pedidos
   /produtos:

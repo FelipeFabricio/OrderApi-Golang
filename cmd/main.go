@@ -41,6 +41,8 @@ func main() {
 
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
+
+	//TODO: Implementar Container de DI usando Wire
 	produtoDb := database.NewProdutoDb(db)
 	produtoUseCases := usecase.NewProdutoUseCases(produtoDb)
 	produtoHandler := handler.NewProdutoHandler(produtoUseCases)
@@ -65,6 +67,7 @@ func main() {
 	r.Route("/pedidos", func(r chi.Router) {
 		r.Get("/", pedidoHandler.ObterPedidosEmAberto)
 		r.Post("/", pedidoHandler.Inserir)
+		r.Get("/{numeropedido}", pedidoHandler.ObterStatusPedido)
 	})
 
 	r.Get("/docs/*", httpSwagger.Handler(httpSwagger.URL("http://localhost:8000/docs/doc.json")))

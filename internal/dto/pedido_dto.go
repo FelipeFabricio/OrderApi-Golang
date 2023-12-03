@@ -35,3 +35,9 @@ type ProdutoPedidoDto struct {
 	ProdutoId  uuid.UUID `json:"produtoId"`
 	Quantidade uint8     `json:"quantidade"`
 }
+
+type ObterStatusPedidoOutputDto struct {
+	Status string          `json:"status"`
+	Valor  decimal.Decimal `json:"valor"`
+	Data   time.Time       `json:"data"`
+}

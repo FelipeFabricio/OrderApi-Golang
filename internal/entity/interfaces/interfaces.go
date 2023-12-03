@@ -33,14 +33,10 @@ type ClienteDbInterface interface {
 type PedidoUseCasesInterface interface {
 	ObterPedidosEmAberto() (*[]dto.ObterPedidosOutputDto, error)
 	Inserir(pedido *dto.CriarPedidoInputDto) error
-	// ObterPorNumeroPedido(numeroPedido string) (*entity.Pedido, error)
-	// ConsultarStatusPagamento(numeroPedido string) (*entity.Pedido, error)
-	// AtualizarStatusPedido(numeroPedido string, status entity.StatusPedido) error
+	ConsultarStatusPagamento(numeroPedido int) (*dto.ObterStatusPedidoOutputDto, error)
 }
 type PedidoDbInterface interface {
 	ObterPedidosEmAberto() (*[]entity.Pedido, error)
 	Inserir(pedido *entity.Pedido) error
-	// ObterPorNumeroPedido(numeroPedido string) (*entity.Pedido, error)
-	// ConsultarStatusPagamento(numeroPedido string) (*entity.Pedido, error)
-	// AtualizarStatusPedido(numeroPedido string, status entity.StatusPedido) error
+	ObterPorNumeroPedido(numeroPedido int) (*entity.Pedido, error)
 }

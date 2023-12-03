@@ -4,7 +4,12 @@ import (
 	"errors"
 
 	"github.com/felipefabricio/wonder-food/internal/entity"
+	"github.com/google/uuid"
 	"gorm.io/gorm"
+)
+
+var (
+	ErrPedidoNaoEncontrado = errors.New("pedido não encontrado")
 )
 
 type PedidoDb struct {
@@ -39,4 +44,14 @@ func (p *PedidoDb) Inserir(pedido *entity.Pedido) error {
 		}
 	}
 	return tx.Commit().Error
+}
+
+func (p *PedidoDb) ObterPorNumeroPedido(numeroPedido int) (*entity.Pedido, error) {
+	var pedido entity.Pedido
+	p.Db.Where("numeroPedido = ?", numeroPedido).First(&pedido)
+
+	if pedido.ID == uuid.Nil {
+		return nil, ErrPedidoNaoEncontrado
+	}
+	return &pedido, nil
 }
