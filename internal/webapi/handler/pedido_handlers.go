@@ -70,7 +70,7 @@ func (p *PedidoHandler) Inserir(w http.ResponseWriter, r *http.Request) {
 }
 
 // ObterStatusPedido godoc
-// @Summary      Obtém o Status do Pedido
+// @Summary      Obter o Status do Pedido
 // @Description  Consulta o Status atual do Pedido
 // @Tags         Pedidos
 // @Accept       json
