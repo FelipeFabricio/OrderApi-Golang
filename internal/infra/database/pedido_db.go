@@ -67,10 +67,10 @@ func (p *PedidoDb) AtualizarStatusPagamento(numeroPedido int, status entity.Stat
 }
 
 func (p *PedidoDb) DeletarPedido(numeroPedido int) error {
-	pedido, err := p.ObterPorNumeroPedido(numeroPedido)
+	_, err := p.ObterPorNumeroPedido(numeroPedido)
 	if err != nil {
 		return ErrPedidoNaoEncontrado
 	}
-	p.Db.Delete(&pedido)
+	p.Db.Exec("DELETE FROM wonderfood.pedidos WHERE numeroPedido = ?", numeroPedido)
 	return nil
 }

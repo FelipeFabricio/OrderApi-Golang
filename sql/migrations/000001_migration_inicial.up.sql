@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS `produtos_pedido` (
   `pedidoId` varchar(36) NOT NULL,
   `produtoId` varchar(36) NOT NULL,
   `quantidade` int NOT NULL,
-  CONSTRAINT `fk_pedidos_produtos_pedido` FOREIGN KEY (`pedidoId`) REFERENCES `pedidos` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_pedidos_produtos_pedido` FOREIGN KEY (`pedidoId`) REFERENCES `pedidos` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
   CONSTRAINT `fk_pedidos_produtos_produtos` FOREIGN KEY (`produtoId`) REFERENCES `produtos` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

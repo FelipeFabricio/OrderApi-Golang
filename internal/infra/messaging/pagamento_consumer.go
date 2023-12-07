@@ -45,13 +45,20 @@ func (c *PagamentoConsumer) Consume(ch *amqp.Channel) {
 			fmt.Printf("Não foi possível deserializar a mensagem: %v", err)
 		}
 
-		if retornoPagamento.PagamentoRealizado {
-			c.PedidoDb.AtualizarStatusPagamento(retornoPagamento.NumeroPedido, entity.Recebido)
-		} else {
-			c.PedidoDb.DeletarPedido(retornoPagamento.NumeroPedido)
+		pedido, err := c.PedidoDb.ObterPorNumeroPedido(retornoPagamento.NumeroPedido)
+		if err != nil {
+			fmt.Printf("Não foi possível obter o pedido: %v", err)
 		}
 
-		log.Printf("Retorno do Pagamento do pedido %d recebido! Pagamento efetuado: %v", retornoPagamento.NumeroPedido, retornoPagamento.PagamentoRealizado)
-		msg.Ack(false)
+		if pedido.Status == entity.AguardandoPagamento {
+			if retornoPagamento.PagamentoRealizado {
+				c.PedidoDb.AtualizarStatusPagamento(retornoPagamento.NumeroPedido, entity.Recebido)
+			} else {
+				c.PedidoDb.DeletarPedido(retornoPagamento.NumeroPedido)
+			}
+
+			log.Printf("Retorno do Pagamento do pedido %d recebido! Pagamento efetuado: %v", retornoPagamento.NumeroPedido, retornoPagamento.PagamentoRealizado)
+			msg.Ack(false)
+		}
 	}
 }
