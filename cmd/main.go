@@ -7,6 +7,7 @@ import (
 	"github.com/felipefabricio/wonder-food/configs"
 	_ "github.com/felipefabricio/wonder-food/docs"
 	"github.com/felipefabricio/wonder-food/internal/infra/database"
+	"github.com/felipefabricio/wonder-food/internal/infra/messaging"
 	"github.com/felipefabricio/wonder-food/internal/usecase"
 	"github.com/felipefabricio/wonder-food/internal/webapi/handler"
 	"github.com/go-chi/chi"
@@ -32,12 +33,20 @@ func main() {
 		panic(err)
 	}
 
-	connectionString := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", configs.DBUser, configs.DBPassword, configs.DBHost, configs.DBPort, configs.DBName)
-	db, err := gorm.Open(mysql.Open(connectionString), &gorm.Config{})
+	dbConnection := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", configs.DBUser, configs.DBPassword, configs.DBHost, configs.DBPort, configs.DBName)
+	db, err := gorm.Open(mysql.Open(dbConnection), &gorm.Config{})
 	if err != nil {
 		panic(err)
 	}
 	fmt.Printf("Conectado ao banco de dados na porta %s!\n", configs.DBPort)
+
+	rabbitMqConnection := fmt.Sprintf("amqp://%s:%s@%s:%s/", configs.RabbitMQUser, configs.RabbitMQPassword, configs.RabbitMQHost, configs.RabbitMQPort)
+	ch := messaging.OpenRabbitMQConnection(rabbitMqConnection)
+
+	go messaging.Consume(ch)
+
+	defer ch.Close()
+	fmt.Printf("Conectado ao RabbitMQ na porta %s!\n", configs.RabbitMQPort)
 
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)

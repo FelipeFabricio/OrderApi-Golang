@@ -8,6 +8,7 @@ require (
 	github.com/google/uuid v1.4.0
 	github.com/shopspring/decimal v1.3.1
 	github.com/spf13/viper v1.17.0
+	github.com/streadway/amqp v1.1.0
 	github.com/swaggo/http-swagger v1.3.4
 	github.com/swaggo/swag v1.16.2
 	gorm.io/driver/mysql v1.5.2
