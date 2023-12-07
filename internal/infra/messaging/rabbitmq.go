@@ -18,16 +18,15 @@ func OpenRabbitMQConnection(connectionString string) *amqp.Channel {
 	}
 
 	_, err = channel.QueueDeclare(
-		"pagamento-pedido", // Nome da fila
-		false,              // Durable
-		false,              // Deletar quando não utilizado
-		false,              // Exclusive
-		false,              // No-wait
-		nil,                // Argumentos
+		"pagamento-pedido",
+		false,
+		false,
+		false,
+		false,
+		nil,
 	)
 	if err != nil {
 		log.Fatalf("Não foi possível declarar a fila: %v", err)
 	}
-
 	return channel
 }

@@ -55,3 +55,22 @@ func (p *PedidoDb) ObterPorNumeroPedido(numeroPedido int) (*entity.Pedido, error
 	}
 	return &pedido, nil
 }
+
+func (p *PedidoDb) AtualizarStatusPagamento(numeroPedido int, status entity.StatusPedido) error {
+	pedido, err := p.ObterPorNumeroPedido(numeroPedido)
+	if err != nil {
+		return ErrPedidoNaoEncontrado
+	}
+	pedido.Status = status
+	p.Db.Save(&pedido)
+	return nil
+}
+
+func (p *PedidoDb) DeletarPedido(numeroPedido int) error {
+	pedido, err := p.ObterPorNumeroPedido(numeroPedido)
+	if err != nil {
+		return ErrPedidoNaoEncontrado
+	}
+	p.Db.Delete(&pedido)
+	return nil
+}

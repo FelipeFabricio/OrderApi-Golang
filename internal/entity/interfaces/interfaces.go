@@ -39,4 +39,6 @@ type PedidoDbInterface interface {
 	ObterPedidosEmAberto() (*[]entity.Pedido, error)
 	Inserir(pedido *entity.Pedido) error
 	ObterPorNumeroPedido(numeroPedido int) (*entity.Pedido, error)
+	AtualizarStatusPagamento(numeroPedido int, status entity.StatusPedido) error
+	DeletarPedido(numeroPedido int) error
 }

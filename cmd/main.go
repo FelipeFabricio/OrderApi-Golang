@@ -40,14 +40,6 @@ func main() {
 	}
 	fmt.Printf("Conectado ao banco de dados na porta %s!\n", configs.DBPort)
 
-	rabbitMqConnection := fmt.Sprintf("amqp://%s:%s@%s:%s/", configs.RabbitMQUser, configs.RabbitMQPassword, configs.RabbitMQHost, configs.RabbitMQPort)
-	ch := messaging.OpenRabbitMQConnection(rabbitMqConnection)
-
-	go messaging.Consume(ch)
-
-	defer ch.Close()
-	fmt.Printf("Conectado ao RabbitMQ na porta %s!\n", configs.RabbitMQPort)
-
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
 
@@ -79,7 +71,15 @@ func main() {
 		r.Get("/{numeropedido}", pedidoHandler.ObterStatusPedido)
 	})
 
+	rabbitMqConnection := fmt.Sprintf("amqp://%s:%s@%s:%s/", configs.RabbitMQUser, configs.RabbitMQPassword, configs.RabbitMQHost, configs.RabbitMQPort)
+	ch := messaging.OpenRabbitMQConnection(rabbitMqConnection)
+	defer ch.Close()
+
+	rabbitMQ := messaging.NewPagamentoConsumer(pedidoDb)
+	go rabbitMQ.Consume(ch)
+	fmt.Printf("Conectado ao RabbitMQ na porta %s!\n", configs.RabbitMQPort)
+
 	r.Get("/docs/*", httpSwagger.Handler(httpSwagger.URL("http://localhost:8000/docs/doc.json")))
-	fmt.Printf("Servidor iniciado na porta %s!", configs.WebServerPort)
+	fmt.Printf("Servidor iniciado na porta %s!\n", configs.WebServerPort)
 	http.ListenAndServe(fmt.Sprintf(":%s", configs.WebServerPort), r)
 }
