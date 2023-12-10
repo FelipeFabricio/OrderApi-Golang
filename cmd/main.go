@@ -25,8 +25,8 @@ import (
 // @contact.name   Felipe Fabricio
 // @contact.url    https://www.linkedin.com/in/felipefabricio/
 // @contact.email  ff.oliveira32@gmail.com
-// @host      localhost:8000
-// @BasePath  /
+// @host           localhost:8000
+// @BasePath       /
 func main() {
 	configs, err := configs.LoadConfig("../configs")
 	if err != nil {

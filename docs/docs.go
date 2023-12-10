@@ -240,7 +240,7 @@ const docTemplate = `{
                 "tags": [
                     "Pedidos"
                 ],
-                "summary": "Obtém o Status do Pedido",
+                "summary": "Obter o Status do Pedido",
                 "parameters": [
                     {
                         "type": "integer",

@@ -33,7 +33,7 @@ func (c *ClienteUseCases) ObterTodos() (*[]dto.ObterClienteOutputDto, error) {
 }
 
 func (c *ClienteUseCases) Inserir(cliente *dto.CriarClienteInputDto) error {
-	//TODO: Da pra ficar melhor
+	//TODO: Refatorar
 	var novoCliente entity.Cliente
 	clienteValidado, err := novoCliente.NewCliente(cliente.Nome, cliente.Email, cliente.Cpf)
 	if err != nil {
