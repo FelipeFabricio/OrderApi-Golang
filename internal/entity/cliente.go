@@ -7,7 +7,7 @@ import (
 )
 
 var (
-	ErrDadosInvalidados = errors.New("Dados do Cliente inválidos")
+	ErrDadosInvalidados = errors.New("Dados do Cliente inválidos.")
 )
 
 type Cliente struct {

@@ -8,6 +8,7 @@ const (
 	EmPreparacao
 	Pronto
 	Finalizado
+	Cancelado
 )
 
 var descricaoStatusPedido = [...]string{
@@ -16,6 +17,7 @@ var descricaoStatusPedido = [...]string{
 	"Em preparação",
 	"Pronto",
 	"Finalizado",
+	"Cancelado",
 }
 
 func (s StatusPedido) ObterDescricaoStatusPedido() string {

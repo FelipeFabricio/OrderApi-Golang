@@ -10,7 +10,7 @@ import (
 	amqp "github.com/streadway/amqp"
 )
 
-type RetornoPagamentoPedido struct {
+type PagamentoPedido struct {
 	NumeroPedido       int  `json:"numeroPedido"`
 	PagamentoRealizado bool `json:"pagamentoRealizado"`
 }
@@ -38,7 +38,7 @@ func (c *PagamentoConsumer) Consume(ch *amqp.Channel) {
 		log.Fatalf("Não foi possível consumir a fila 'pagamento-pedido': %v", err)
 	}
 
-	var retornoPagamento RetornoPagamentoPedido
+	var retornoPagamento PagamentoPedido
 	for msg := range msgs {
 		err := json.Unmarshal(msg.Body, &retornoPagamento)
 		if err != nil {
@@ -54,7 +54,7 @@ func (c *PagamentoConsumer) Consume(ch *amqp.Channel) {
 			if retornoPagamento.PagamentoRealizado {
 				c.PedidoDb.AtualizarStatusPagamento(retornoPagamento.NumeroPedido, entity.Recebido)
 			} else {
-				c.PedidoDb.DeletarPedido(retornoPagamento.NumeroPedido)
+				c.PedidoDb.AtualizarStatusPagamento(retornoPagamento.NumeroPedido, entity.Cancelado)
 			}
 
 			log.Printf("Retorno do Pagamento do pedido %d recebido! Pagamento efetuado: %v", retornoPagamento.NumeroPedido, retornoPagamento.PagamentoRealizado)
